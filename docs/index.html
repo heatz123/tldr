@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="TLDR: Unsupervised Goal-Conditioned RL">
+  <meta name="keywords" content="GCRL, TLDR, unsupervised reinforcement learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations</title>
+
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://heatz123.github.io">Junik Bae</a>,</span>
+            <span class="author-block">
+              <a href="https://kwanyoungpark.github.io">Kwanyoung Park</a>,</span>
+            <span class="author-block">
+              <a href="https://youngwoon.github.io">Youngwoon Lee</a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Yonsei University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2407.08464"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/heatz123/tldr"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser section -->
+<section>
+  <div class="container is-max-desktop padding_bottom-40">
+    <h3 class="subtitle has-text-centered">
+      <span class="dnerf">TL;DR:</span> Without any supervision, <b>TLDR</b> can explore extensive regions and reach diverse goals!
+    </h3>
+
+    <div class="container">
+      <div id="video-grid-row1" class="video-grid-4">
+        <div class="video-item">
+            <video poster="" id="steve" autoplay muted loop playsinline>
+              <source src="./static/videos-teaser/large-teaser.mov" type="video/mp4">
+            </video>
+          <p class="caption-small">AntMaze-Large</p>
+        </div>
+        <div class="video-item">
+          <video poster="" id="chair-tp" autoplay muted loop playsinline>
+            <source src="./static/videos-teaser/ultra-teaser.mov" type="video/mp4">
+          </video>
+          <p class="caption-small">AntMaze-Ultra</p>
+        </div>
+        <div class="video-item">
+          <video poster="" id="steve" autoplay muted loop playsinline>
+            <source src="./static/videos-teaser/humanoid-state-teaser.mov" type="video/mp4">
+          </video>
+          <p class="caption-small">Humanoid-Run</p>
+        </div>
+        <div class="video-item">
+          <video poster="" id="chair-tp" autoplay muted loop playsinline>
+            <source src="./static/videos-teaser/quadruped-teaser.mov" type="video/mp4">
+          </video>
+          <p class="caption-small">Quadruped-Escape</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Unsupervised goal-conditioned reinforcement learning (GCRL) is a promising paradigm for developing diverse robotic skills without external supervision. However, existing unsupervised GCRL methods often struggle to cover a wide range of states in complex environments due to their limited exploration and sparse or noisy rewards for GCRL. To overcome these challenges, we propose a novel unsupervised GCRL method that leverages TemporaL Distance-aware Representations (TLDR). With TLDR, our approach selects faraway goals to initiate exploration, and computes intrinsic exploration rewards and goal-reaching rewards. Specifically, our exploration policy seeks states with large temporal distances (i.e. covering a large state space), while the goal-conditioned policy learns to minimize the temporal distance to the goal (i.e. reaching the goal). Our experimental results in six simulated robotic locomotion environments demonstrate that our method significantly outperforms previous unsupervised GCRL methods in achieving a wide variety of states.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered padding_bottom draw_bottomline">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Unsupervised Goal-Conditioned RL</h2>
+
+        <div class="content has-text-justified">
+          <img src="./static/images/gcrl_challenges.png" style="width: 100%;">
+          <p>
+            Unsupervised GCRL aims to learn a goal-conditioned policy capable of reaching diverse states without supervision. <br>
+            There are two major challenges in unsupervised GCRL:
+            <ul>
+              <li> <b>Exploring diverse states</b> to ensure the agent can learn to achieve a wide variety of goals
+              <li> Effectively learning a <b>goal-reaching policy</b></li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="container is-max-desktop padding_top">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3 has-text-centered">Method: TLDR</h2>
+          <div class="content has-text-justified">  
+            <p>
+              To address those challenges, we propose <b>TLDR</b>, a novel unsupervised GCRL algorithm that leverages <b>TemporaL Distance-aware Representations</b> to improve both goal-directed exploration and goal-conditioned policy learning. 
+              Specifically, our method utilizes temporal distance induced by temporal distance-aware representations for
+              1) <b>selecting faraway goals</b> to initiate exploration,
+              2) learning a <b> goal-conditioned policy </b> that minimizes temporal distance to a goal, and
+              3) learning an <b>exploration policy</b> that maximizes temporal distance.
+              \(\def\s{\textbf{s}}\def\g{\mathbf{g}}\)
+            </p>
+            <p>
+              <img src="./static/images/tldr-overview-update.png" style="width: 100%; padding: 20px;">
+              <b>Learning temporal distance-aware representations</b>: 
+              <ul>
+                <li>Here, <i>temporal distance</i> is defined by the minimum number of timesteps required to reach a state from the other state. </li>
+                <li>Temporal distance-aware representations \(\phi(\textbf{s})\) encode the temporal distance between two states into L2 distance in the representation space, i.e. \(d(\s_1, \s_2) = \lVert \phi(\s_1) - \phi(\s_2) \rVert\).
+                <li>We can train \(\phi\) by solving a constrained optimization problem:
+$$
+\max_\phi \mathbb{E}_{\mathbf{s} \sim p_{\mathbf{s}}, \mathbf{g} \sim p_{\mathbf{g}}}\left[ \lVert \phi(\mathbf{s}) - \phi(\mathbf{g}) \rVert \right] \quad \text{ s.t. } \quad \mathbb{E}_{(\mathbf{s}, \mathbf{a}, \mathbf{s}') \sim p_\text{transition}} \left[ \lVert \phi(\mathbf{s}) - \phi(\mathbf{s}') \rVert \right] \le 1,
+$$
+where \(\mathbf{s}\) and \(\mathbf{g}\) is selected randomly from the replay buffer. </li>
+              </ul>
+            </p>
+            <p>
+              <b>Selecting the goals</b>: We select goals that are <b>temporally distant</b> from states that are already visited (i.e. in the replay buffer) to explore hard-to-reach states.
+              In particular, we choose N goals with the top-N highest entropy, calculated by non-parametric particle-based entropy estimator with respect to our temporal distance-aware representation:
+              $$
+              r_\text{TLDR}(\\s) = \log\left(1 + \frac{1}{k} \sum_{{\textbf{z}^{(j)}} \in N_k(\phi(\\s))} ||\phi(\\s) - \textbf{z}^{(j)}||\right),
+              $$ 
+              where \(N_k(\cdot)\) denotes the \(k\)-nearest neighbors around \(\phi(\mathbf{s})\) within a single minibatch. 
+            </p>
+            <p>
+              <b>Learning goal-conditioned policy</b>: 
+              The goal-conditioned policy aims to minimize the distance to the goal.
+              In this work, we propose leveraging a task-agnostic metric, <b>temporal distance</b>, as the learning signal for the goal-conditioned policy, which can be easily calculated using temporal distance-aware representations:
+              $$
+              r^G(\s, \s') = \lVert \phi(\s) - \phi(\g)\rVert - \lVert\phi(\s') - \phi(\g)\rVert.
+              $$
+            </p>
+            <p>
+              <b>Learning exploration policy</b>: 
+              After the goal-conditioned policy navigates towards the chosen goal \(\g\), the exploration policy is executed to discover states even more distant from the visited states.
+              This objective of the exploration policy can be simply defined as:
+              $$
+              r^E(\s, \s') = r_\text{TLDR}(\s') - r_\text{TLDR}(\s).
+              $$
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="hero is-light">
+  <div class="container is-max-desktop">
+    <div class="container is-max-desktop padding_moretop padding_bottom">
+      <!-- Animation. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-2 has-text-centered" >Experiments</h2>
+          <div class="content has-text-justified">
+            <p>
+              We compare the trajectories with METRA, a state-of-the-art unsupervised RL method showing strong performances for downstream goal-reaching tasks in high-dimensional state spaces.
+            </p>
+          </div>
+          <div class="container padding_bottom">
+          <h3 class="subtitle is-3 has-text-centered">Goal-reaching Results</h3>
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">
+                AntMaze-Large
+              </div>
+              <div id="video-grid-row1" class="video-grid padding_bottom">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_antmaze-large-play_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_antmaze-large-play_metra_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+              <p class="caption-large">
+                TLDR can successfully reach all the goals, while METRA struggles with some of the goals in the maze.
+              </p>
+            </div>
+
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">AntMaze-Ultra</div>
+              <div id="video-grid-row1" class="video-grid padding_bottom">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_antmaze-ultra-play_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_antmaze-ultra-play_metra_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+
+              <p class="caption-large">
+                TLDR can successfully reach most of the goals, while METRA struggles with some of the goals in the maze.
+              </p>
+            </div>
+
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">Humanoid-Run</div>
+              <div id="video-grid-row1" class="video-grid">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_dmc_humanoid_state-closeup.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_dmc_humanoid_state_metra-closeup.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+            
+            <p class="caption-large">
+                TLDR can reach diverse goals faster than METRA.
+                Interestingly, TLDR often switches the direction before or after reaching the goal.
+            </p>
+            </div>
+
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">Quadruped-Escape</div>
+              <div id="video-grid-row1" class="video-grid">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_dmc_quadruped_state_escape.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos_eval/train_goals_dmc_quadruped_state_escape_metra.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+              <p class="caption-large">
+                TLDR can reach goals in more diverse directions compared to METRA.
+              </p>
+            </div>
+            
+          </div>
+          <div class="container padding_moretop padding_bottom">
+            <h3 class="subtitle is-3 has-text-centered">Training Behaviors</h3>
+            
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered has-text-centered">AntMaze-Large</div>
+              <div id="video-grid-row1" class="video-grid">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_antmaze-large-play_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_antmaze-large-play_metra_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+
+              <p class="caption-large">While training, TLDR explores more diverse regions of the maze.</p>
+            </div>
+              
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">AntMaze-Ultra</div>
+              <div id="video-grid-row1" class="video-grid">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_antmaze-ultra-play_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_antmaze-ultra-play_metra_cropped.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+              <p class="caption-large">While training, TLDR explores more diverse regions of the maze.</p>
+            </div>
+            
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">Humanoid-Run</div>
+              <div id="video-grid-row1" class="video-grid">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_dmc_humanoid_state.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_dmc_humanoid_state_metra.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+              <p class="caption-large">TLDR explores in more diverse directions, and also learns faster and far-reaching behaviors.</p>
+            </div>
+            
+            <div class="padding_bottom">
+              <div class="row-title has-text-centered">Quadruped-Escape</div>
+              <div id="video-grid-row1" class="video-grid">
+                <div class="video-item">
+                  <video poster="" id="steve" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_dmc_quadruped_state_escape.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption"><b>TLDR</b></p>
+                </div>
+                <div class="video-item">
+                  <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
+                    <source src="./static/videos/train_goals_dmc_quadruped_state_escape_metra.mp4" type="video/mp4">
+                  </video>
+                  <p class="caption">METRA</p>
+                </div>
+              </div>
+              <p class="caption-large">TLDR explores in more diverse directions, and capable of exploring hard-to-reach states.
+              </p>
+            </div>
+            
+          </div>
+
+          <!-- <h3 class="title is-3">Task Results</h3>
+          
+          <div class="content has-text-justified">
+            <h4 class="title is-4">State Coverage</h4>
+            <img src="./static/images/tldr-state-coverage.png" style="width: 100%;">
+            <p>
+              TLDR achieves higher state coverage than previous methods in most of the state-based locomotion environments.
+            </p>
+          </div>
+
+          <div class="content has-text-justified">  
+            <h4 class="title is-4">Goal-reaching metrics</h4>
+            <img src="./static/images/tldr-goal-reaching.png" style="width: 100%;">
+            <p>
+              Ours achieves <b>(1)</b> lower distance between the final state and the goal <b>(2)</b> more number of reached goals, indicating better goal-reaching performances.
+            </p>
+          </div> -->  
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{bae2024tldr,
+  author    = {Junik Bae and Kwanyoung Park and Youngwoon Lee},
+  title     = {TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations},
+  journal   = {arXiv Preprint arxiv:2407.08464},
+  year      = {2024},
+}</code></pre>
+
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The website template was borrowed from <a href="
+            https://nerfies.github.io/">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
