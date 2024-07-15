@@ -1,4 +1,4 @@
-# TLDR: Temporal Distance-aware Representation for Unsupervised Goal-Conditioned RL
+# TLDR: Temporal Distance-aware Representations for Unsupervised Goal-Conditioned RL
 
 This repository contains the official implementation of [TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations](https://heatz123.github.io/tldr/) by [Junik Bae](https://heatz123.github.io/), [Kwanyoung Park](https://kwanyoungpark.github.io/) and [Youngwoon Lee](https://youngwoon.github.io/).
 
