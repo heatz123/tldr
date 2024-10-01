@@ -269,9 +269,9 @@ class TLDR(IOD):
         if (
             self.replay_buffer.n_transitions_stored < num_batch
         ):  # case for evaluation for the first epoch & early training
-            example_ob = np.full(self._env_spec.observation_space.shape, 1000).reshape(
+            example_ob = np.full(self._env_spec.observation_space.shape, 1000.0).reshape(
                 -1
-            )
+            ).astype(np.float32) # 1000.0 is dummy value
             if len(self._env_spec.observation_space.shape) >= 3:
                 example_ob = example_ob.astype(np.uint8)
             goals = example_ob[None, :].repeat(size, axis=0)
