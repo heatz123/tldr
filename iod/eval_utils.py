@@ -171,9 +171,12 @@ def get_eval_goals(self, runner):
             ob = env.reset()
             state = env.physics.get_state().copy()
             goal_loc = (np.random.rand(2) * 2 - 1) * self.goal_range
-            ob[:2] = goal_loc
-            for _ in range(5):
-                env.step(np.zeros_like(env.action_space.sample()))
+            state[:2] = goal_loc
+            env.physics.set_state(state)
+            
+            for _ in range(50):
+                ob, *_ = env.step(np.zeros_like(env.action_space.sample()))
+
             goal_obs = ob.copy().astype(np.float32)
             goals.append((goal_obs, {"goal_loc": goal_loc}))
 
@@ -189,9 +192,6 @@ def get_eval_goals(self, runner):
                 goal_loc = (np.random.rand(1) * 2 - 1) * self.goal_range
                 state[:1] = goal_loc
                 env.set_state(state[:9], state[9:])
-            elif self.env_name in ["dmc_humanoid_state"]:
-                goal_loc = (np.random.rand(2) * 2 - 1) * self.goal_range
-                ob[:2] = goal_loc
             else:
                 goal_loc = (np.random.rand(2) * 2 - 1) * self.goal_range
                 state[:2] = goal_loc
@@ -206,10 +206,7 @@ def get_eval_goals(self, runner):
                 )
                 goal_obs = np.tile(goal_obs, self.frame_stack or 1).flatten()
             else:
-                if self.env_name == "dmc_humanoid_state":
-                    goal_obs = ob.copy().astype(np.float32)
-                else:
-                    goal_obs = env._apply_normalize_obs(state).astype(np.float32)
+                goal_obs = env._apply_normalize_obs(state).astype(np.float32)
             goals.append((goal_obs, {"goal_loc": goal_loc}))
     else:
         goals = []
