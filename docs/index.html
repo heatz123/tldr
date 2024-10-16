@@ -37,6 +37,7 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title">TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations</h1>
+          <h2 class="title is-3 publication-venue">CoRL 2024</h2>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://heatz123.github.io">Junik Bae</a>,</span>
@@ -275,21 +276,20 @@ where \(\mathbf{s}\) and \(\mathbf{g}\) is selected randomly from the replay buf
               <div id="video-grid-row1" class="video-grid">
                 <div class="video-item">
                   <video poster="" id="steve" autoplay controls muted loop playsinline>
-                    <source src="./static/videos_eval/train_goals_dmc_humanoid_state-closeup.mp4" type="video/mp4">
+                    <source src="./static/videos_eval/train_goals_dmc_humanoid_state.mp4" type="video/mp4">
                   </video>
                   <p class="caption"><b>TLDR</b></p>
                 </div>
                 <div class="video-item">
                   <video poster="" id="chair-tp" autoplay controls muted loop playsinline>
-                    <source src="./static/videos_eval/train_goals_dmc_humanoid_state_metra-closeup.mp4" type="video/mp4">
+                    <source src="./static/videos_eval/train_goals_dmc_humanoid_state_metra.mp4" type="video/mp4">
                   </video>
                   <p class="caption">METRA</p>
                 </div>
               </div>
             
             <p class="caption-large">
-                TLDR can reach diverse goals faster than METRA.
-                Interestingly, TLDR often switches the direction before or after reaching the goal.
+                TLDR can reach diverse goals while demonstrating faster movements compared to METRA.
             </p>
             </div>
 
@@ -397,7 +397,25 @@ where \(\mathbf{s}\) and \(\mathbf{g}\) is selected randomly from the replay buf
             </div>
             
           </div>
+<!-- 
+          <h3 class="title is-3">Task Results</h3>
+          
+          <div class="content has-text-justified">
+            <h4 class="title is-4">State Coverage</h4>
+            <img src="./static/images/tldr-state-coverage.png" style="width: 100%;">
+            <p>
+              TLDR achieves higher state coverage than previous methods in most of the state-based locomotion environments.
+            </p>
+          </div>
 
+          <div class="content has-text-justified">  
+            <h4 class="title is-4">Goal-reaching metrics</h4>
+            <img src="./static/images/tldr-goal-reaching.png" style="width: 100%;">
+            <p>
+              Ours achieves <b>(1)</b> lower distance between the final state and the goal <b>(2)</b> more number of reached goals, indicating better goal-reaching performances.
+            </p>
+          </div> -->
+          
           <!-- <h3 class="title is-3">Task Results</h3>
           
           <div class="content has-text-justified">
@@ -414,7 +432,7 @@ where \(\mathbf{s}\) and \(\mathbf{g}\) is selected randomly from the replay buf
             <p>
               Ours achieves <b>(1)</b> lower distance between the final state and the goal <b>(2)</b> more number of reached goals, indicating better goal-reaching performances.
             </p>
-          </div> -->  
+          </div> -->
 
         </div>
 
@@ -424,14 +442,27 @@ where \(\mathbf{s}\) and \(\mathbf{g}\) is selected randomly from the replay buf
   </div>
 </section>
 
-<section class="section" id="BibTeX">
+<section class="section" id="Simulated A1">
+  <div class="container is-max-desktop content">
+    <h3 class="subtitle is-3 has-text-centered">Simulated Unitree A1 Experiments</h2>
+    <video poster="" id="steve" autoplay muted loop playsinline>
+      <source src="./static/videos/safety.mp4" type="video/mp4">
+    </video>
+    <p class="caption-large">
+      TLDR may learn unsafe behaviors without any regularization. However, by adding a safety reward \(r_{\text{safe}} = [0, 0, 1] \cdot \mathbf{v_{torso}}\), TLDR can learn effective goal-reaching behaviors while simultaneously maximizing safety.<!--  \(\mathbf{v_{torso}}\) is the orientation of robot torso which equals to \([0, 0, 1]\) with upright direction. -->
+    </p>
+  </div>
+</section>
+
+
+<section class="section hero is-light" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{bae2024tldr,
-  author    = {Junik Bae and Kwanyoung Park and Youngwoon Lee},
-  title     = {TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations},
-  journal   = {arXiv Preprint arxiv:2407.08464},
-  year      = {2024},
+    <pre><code>@inproceedings{bae2024tldr,
+  author = {Junik Bae and Kwanyoung Park and Youngwoon Lee},
+  title = {TLDR: Unsupervised Goal-Conditioned RL via Temporal Distance-Aware Representations},
+  booktitle = {Conference on Robot Learning},
+  year = {2024},
 }</code></pre>
 
   </div>

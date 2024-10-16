@@ -220,9 +220,6 @@ class Humanoid(base.Task):
         """Returns either the pure state or a set of egocentric features."""
         obs = collections.OrderedDict()
         if self._pure_state:
-            # added
-            obs["actual_pos"] = physics.named.data.xpos["torso"].copy()
-            # shape = (3,)
             obs["position"] = physics.position()
             obs["velocity"] = physics.velocity()
         else:

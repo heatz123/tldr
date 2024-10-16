@@ -269,9 +269,9 @@ class TLDR(IOD):
         if (
             self.replay_buffer.n_transitions_stored < num_batch
         ):  # case for evaluation for the first epoch & early training
-            example_ob = np.full(self._env_spec.observation_space.shape, 1000).reshape(
+            example_ob = np.full(self._env_spec.observation_space.shape, 1000.0).reshape(
                 -1
-            )
+            ).astype(np.float32) # 1000.0 is dummy value
             if len(self._env_spec.observation_space.shape) >= 3:
                 example_ob = example_ob.astype(np.uint8)
             goals = example_ob[None, :].repeat(size, axis=0)
@@ -390,7 +390,7 @@ class TLDR(IOD):
     def _update_loss_te_tldr(self, tensors, internal_vals, traj_encoder, dual_lam):
         obs = internal_vals["obs"]
         next_obs = internal_vals["next_obs"]
-        goals = internal_vals["goals"]
+        goals = torch.roll(next_obs, 1, dims=0)
 
         phi_x, phi_y, phi_g = torch.split(
             traj_encoder(torch.cat([obs, next_obs, goals], dim=0)).mean, len(obs)
